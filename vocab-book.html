@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>單字本</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>單字本總覽</h1>
+            <nav>
+                <span id="user-display"></span>
+                <a href="index.html">返回測驗</a>
+                <a href="stats.html">測驗統計</a>
+                <button id="logout-btn">登出</button>
+            </nav>
+        </header>
+
+        <main id="book-container">
+            <div class="form-group">
+                <label for="topic-select-book">選擇要學習的主題：</label>
+                <select id="topic-select-book">
+                    <option value="all">所有單字</option>
+                    <!-- 主題將由 JS 動態載入 -->
+                </select>
+            </div>
+
+            <table id="vocab-table">
+                <thead>
+                    <tr>
+                        <th>單字 / 發音</th>
+                        <th>中文解釋</th>
+                        <th>例句</th>
+                        <th>發音</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 單字列表將由 JS 動態生成 -->
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+
+    <!-- Project Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="auth.js"></script>
+    <script src="vocab-book.js"></script>
+</body>
+</html>
