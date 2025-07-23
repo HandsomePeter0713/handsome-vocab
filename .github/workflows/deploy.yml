@@ -4,17 +4,22 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main # Or your default branch
+      - main # 當 main 分支有新的 push 時觸發
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    
+    # 賦予此工作寫入儲存庫的權限，以便將網站內容推送到 gh-pages 分支
+    permissions:
+      contents: write
+      
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@4.1.4
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages # The branch the action should deploy to.
-          folder: . # The folder the action should deploy.
+          branch: gh-pages # 部署到 gh-pages 分支
+          folder: .       # 部署儲存庫的根目錄
