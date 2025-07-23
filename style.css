@@ -285,34 +285,38 @@ td .incorrect { color: var(--incorrect-color); }
     }
 }
 
-/* --- 新增：單字本表格欄位寬度調整 --- */
 #vocab-table {
     table-layout: fixed; /* 讓表格遵從設定的寬度 */
     word-wrap: break-word; /* 確保長單字或例句能換行 */
 }
 
-/* 設定第一欄 (單字/詞性/發音) 的寬度 */
 #vocab-table th:nth-child(1),
 #vocab-table td:nth-child(1) {
     width: 25%;
 }
 
-/* 設定第二欄 (中文解釋) 的寬度 */
 #vocab-table th:nth-child(2),
 #vocab-table td:nth-child(2) {
     width: 25%;
 }
 
-/* 設定第三欄 (例句) 的寬度 */
 #vocab-table th:nth-child(3),
 #vocab-table td:nth-child(3) {
     width: 45%;
 }
 
-/* 設定第四欄 (發音按鈕) 的寬度並置中 */
 #vocab-table th:nth-child(4),
 #vocab-table td:nth-child(4) {
     width: 5%;
     text-align: center;
 }
-/* --- 修改結束 --- */
+
+.chart-container {
+    position: relative;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: var(--primary-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    max-width: 100%;
+}

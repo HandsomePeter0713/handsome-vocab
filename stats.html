@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>測驗統計</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="assets/icon.png">
+    <!-- [新增] 引入 Chart.js 程式庫 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
@@ -14,13 +15,20 @@
             <nav>
                 <span id="user-display"></span>
                 <a href="index.html">返回測驗</a>
-                <!-- [新增] 單字本連結 -->
                 <a href="vocab-book.html">單字本</a>
                 <button id="logout-btn">登出</button>
             </nav>
         </header>
 
         <main id="stats-container">
+            <!-- [新增] 近一週成果圖表區塊 -->
+            <section class="weekly-summary">
+                <h2>近一週學習成果</h2>
+                <div class="chart-container">
+                    <canvas id="weekly-chart"></canvas>
+                </div>
+            </section>
+
             <section class="stats-summary">
                 <h2>總覽</h2>
                 <p>總測驗單字數: <span id="total-words">0</span></p>
@@ -48,9 +56,6 @@
                 </div>
                  <button id="practice-incorrect-btn" class="hidden">練習錯題</button>
             </section>
-            
-            <!-- [移除] 整個歷史答題紀錄區塊已被刪除 -->
-
         </main>
     </div>
 
