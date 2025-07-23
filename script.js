@@ -1,4 +1,4 @@
-// script.js (完整版本)
+// script.js
 document.addEventListener('DOMContentLoaded', () => {
     // DOM 元素
     const setupScreen = document.getElementById('setup-screen');
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startBtn = document.getElementById('start-btn');
     
     const definitionDisplay = document.getElementById('definition-display');
-    const posDisplay = document.getElementById('pos-display'); // [新增] 取得詞性顯示元素
+    const posDisplay = document.getElementById('pos-display');
     const answerInput = document.getElementById('answer-input');
     const feedback = document.getElementById('feedback');
     const nextBtn = document.getElementById('next-btn');
@@ -212,7 +212,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const wordData = currentQuizVocab[currentWordIndex];
         definitionDisplay.textContent = wordData.Definition_ZH;
-        // [修改] 顯示詞性
         posDisplay.textContent = `(${wordData.PartOfSpeech})`; 
         
         answerInput.value = '';
@@ -318,7 +317,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const correctnessClass = item.isCorrect ? 'correct' : 'incorrect';
             const correctnessIcon = item.isCorrect ? '✔' : '✘';
             
-            // [修改] 在回顧列表中加入詞性
             row.innerHTML = `
                 <td>
                     ${item.wordData.Word} <span class="part-of-speech">(${item.wordData.PartOfSpeech})</span>
@@ -358,6 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return array;
     }
 
+    // 事件監聽
     startBtn.addEventListener('click', startQuiz);
     restartBtn.addEventListener('click', resetQuiz);
     
@@ -370,5 +369,13 @@ document.addEventListener('DOMContentLoaded', () => {
     nextBtn.addEventListener('click', () => {
         currentWordIndex++;
         loadQuestion();
+    });
+
+    // [新增] 監聽題數輸入框的 Enter 鍵
+    questionCountInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // 防止預設行為 (如表單提交)
+            startBtn.click(); // 模擬點擊開始按鈕
+        }
     });
 });
