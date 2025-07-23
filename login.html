@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入 - Vocab Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-page">
+    <div class="container">
+        <header>
+            <h1>單字測驗通</h1>
+            <p>登入以開始您的學習之旅</p>
+        </header>
+        <main class="login-box">
+            <button id="google-login-btn">使用 Google 登入</button>
+            <button id="anonymous-login-btn">匿名登入</button>
+        </main>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script> 
+
+    <!-- Project Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>

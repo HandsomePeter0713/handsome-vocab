@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>測驗統計</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>測驗統計</h1>
+            <nav>
+                <span id="user-display"></span>
+                <a href="index.html">返回測驗</a>
+                <!-- [新增] 單字本連結 -->
+                <a href="vocab-book.html">單字本</a>
+                <button id="logout-btn">登出</button>
+            </nav>
+        </header>
+
+        <main id="stats-container">
+            <section class="stats-summary">
+                <h2>總覽</h2>
+                <p>總測驗單字數: <span id="total-words">0</span></p>
+                <p>總答對數: <span id="total-correct">0</span></p>
+                <p>總正確率: <span id="total-accuracy">0%</span></p>
+                <p>已熟練單字數: <span id="mastered-words">0</span></p>
+            </section>
+
+            <section class="incorrect-words">
+                <h2>錯題本</h2>
+                <div id="incorrect-list-container">
+                    <p id="no-incorrect-msg">目前沒有錯誤的單字！</p>
+                    <table id="incorrect-table" class="hidden">
+                        <thead>
+                            <tr>
+                                <th>單字</th>
+                                <th>答錯次數</th>
+                                <th>中文解釋</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data will be populated by stats.js -->
+                        </tbody>
+                    </table>
+                </div>
+                 <button id="practice-incorrect-btn" class="hidden">練習錯題</button>
+            </section>
+            
+            <!-- [移除] 整個歷史答題紀錄區塊已被刪除 -->
+
+        </main>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+
+    <!-- Project Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="auth.js"></script>
+    <script src="stats.js"></script>
+</body>
+</html>
