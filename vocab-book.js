@@ -1,4 +1,4 @@
-// vocab-book.js
+// vocab-book.js (完整版本)
 document.addEventListener('DOMContentLoaded', () => {
     const topicSelect = document.getElementById('topic-select-book');
     const vocabTableBody = document.querySelector('#vocab-table tbody');
@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const synth = window.speechSynthesis;
     let googleVoice = null;
 
-    // 優化後的語音播放函式
     function loadVoices() {
         const voices = synth.getVoices();
         googleVoice = voices.find(voice => voice.name === 'Google US English') || voices.find(voice => voice.lang === 'en-US');
@@ -25,19 +24,17 @@ document.addEventListener('DOMContentLoaded', () => {
         synth.speak(utterance);
     }
     
-    // 瀏覽器載入語音需要一點時間
     loadVoices();
     if (speechSynthesis.onvoiceschanged !== undefined) {
         speechSynthesis.onvoiceschanged = loadVoices;
     }
 
-    // 載入單字資料並初始化
     async function initialize() {
         try {
             const response = await fetch('data/all_vocab_master.json');
             allVocab = await response.json();
             populateTopics();
-            displayWords('all'); // 預設顯示所有單字
+            displayWords('all');
         } catch (error) {
             console.error('Error loading vocabulary data:', error);
             vocabTableBody.innerHTML = '<tr><td colspan="4">無法載入單字庫。</td></tr>';
@@ -56,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displayWords(selectedTopic) {
-        vocabTableBody.innerHTML = ''; // 清空現有列表
+        vocabTableBody.innerHTML = '';
         const wordsToShow = (selectedTopic === 'all')
             ? allVocab
             : allVocab.filter(v => v.Topic === selectedTopic);
@@ -68,8 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         wordsToShow.forEach(wordData => {
             const row = document.createElement('tr');
+            // [修改] 在單字旁加入詞性
             row.innerHTML = `
-                <td><strong>${wordData.Word}</strong><br><small>${wordData.Pronunciation}</small></td>
+                <td>
+                    <strong>${wordData.Word}</strong> <span class="part-of-speech">(${wordData.PartOfSpeech})</span>
+                    <br><small>${wordData.Pronunciation}</small>
+                </td>
                 <td>${wordData.Definition_ZH}</td>
                 <td>${wordData.Example_EN}<br><small>${wordData.Example_ZH}</small></td>
                 <td>
@@ -79,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
             vocabTableBody.appendChild(row);
         });
 
-        // 為所有新的發音按鈕添加事件監聽
         document.querySelectorAll('.review-pronounce-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 speakWord(this.dataset.word);
@@ -87,7 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 事件監聽
     topicSelect.addEventListener('change', () => {
         displayWords(topicSelect.value);
     });

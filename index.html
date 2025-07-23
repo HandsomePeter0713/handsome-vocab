@@ -12,7 +12,6 @@
             <h1>單字測驗通</h1>
             <nav>
                 <span id="user-display"></span>
-                <!-- [新增] 單字本連結 -->
                 <a href="vocab-book.html">單字本</a>
                 <a href="stats.html">測驗統計</a>
                 <button id="logout-btn">登出</button>
@@ -52,7 +51,11 @@
                 </div>
                 <p id="progress-text">第 1 / N 題</p>
                 <div class="question-card">
-                    <p id="definition-display">中文解釋會顯示在這裡。</p>
+                    <!-- [修改] 將顯示區塊改為 div 以容納詞性 -->
+                    <div id="definition-container">
+                        <span id="definition-display">中文解釋會顯示在這裡。</span>
+                        <span id="pos-display" class="part-of-speech"></span>
+                    </div>
                     <div class="input-group">
                         <input type="text" id="answer-input" placeholder="請拼出英文單字..." autocomplete="off">
                     </div>
@@ -76,7 +79,7 @@
                     <table id="review-table">
                         <thead>
                             <tr>
-                                <th>單字</th>
+                                <th>單字 / 詞性</th>
                                 <th>您的答案</th>
                                 <th>結果</th>
                                 <th>發音</th>

@@ -74,7 +74,6 @@ nav button {
     font-style: italic;
 }
 
-/* 按鈕樣式 */
 button, .button-link {
     display: inline-block;
     background-color: var(--accent-color);
@@ -99,7 +98,6 @@ button:disabled {
     cursor: not-allowed;
 }
 
-/* [新增] 結果畫面的按鈕容器，用於對齊 */
 .result-buttons {
     display: flex;
     align-items: center;
@@ -107,7 +105,6 @@ button:disabled {
     flex-wrap: wrap;
 }
 
-/* 表單元素 */
 .form-group {
     margin-bottom: 1.5rem;
 }
@@ -128,12 +125,10 @@ select, input[type="text"], input[type="number"] {
     font-size: 1rem;
 }
 
-/* [修改] 移除為發音按鈕留下的空間 */
 input[type="text"] {
     padding-right: 10px;
 }
 
-/* 測驗畫面 */
 #quiz-screen {
     text-align: center;
 }
@@ -160,11 +155,28 @@ input[type="text"] {
     margin-top: 1rem;
 }
 
+/* [新增] 題目顯示區塊的樣式 */
+#definition-container {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    min-height: 50px;
+}
+
 #definition-display {
     font-size: 1.8rem;
     font-weight: bold;
-    margin-bottom: 1.5rem;
-    min-height: 50px;
+}
+
+.part-of-speech {
+    font-style: normal; /* 移除斜體 */
+    font-size: 1.0rem;  /* 讓字體再小一點 */
+    color: #b0b0b0;
+    align-self: center;
+    font-weight: normal; /* 確保字體不是粗體 */
 }
 
 .input-group {
@@ -172,8 +184,6 @@ input[type="text"] {
     display: flex;
     align-items: center;
 }
-
-/* [移除] pronounce-btn 的樣式 */
 
 .feedback {
     margin-top: 1rem;
@@ -190,8 +200,7 @@ input[type="text"] {
     color: var(--incorrect-color);
 }
 
-/* 統計頁面 & 結果回顧列表 */
-#stats-container h2, #quiz-review-container h3 {
+#stats-container h2, #quiz-review-container h3, #book-container h2 {
     color: var(--accent-color);
     border-bottom: 1px solid #555;
     padding-bottom: 0.5rem;
@@ -218,7 +227,6 @@ th {
 td .correct { color: var(--correct-color); }
 td .incorrect { color: var(--incorrect-color); }
 
-/* [新增] 回顧列表中的發音按鈕樣式 */
 .review-pronounce-btn {
     background: none;
     border: none;
@@ -229,7 +237,6 @@ td .incorrect { color: var(--incorrect-color); }
     margin: 0;
 }
 
-/* 登入頁面 */
 .login-page {
     align-items: center;
 }
@@ -260,7 +267,6 @@ td .incorrect { color: var(--incorrect-color); }
     display: none !important;
 }
 
-/* 響應式設計 */
 @media (max-width: 600px) {
     body {
         padding: 10px;
@@ -278,3 +284,35 @@ td .incorrect { color: var(--incorrect-color); }
         justify-content: center;
     }
 }
+
+/* --- 新增：單字本表格欄位寬度調整 --- */
+#vocab-table {
+    table-layout: fixed; /* 讓表格遵從設定的寬度 */
+    word-wrap: break-word; /* 確保長單字或例句能換行 */
+}
+
+/* 設定第一欄 (單字/詞性/發音) 的寬度 */
+#vocab-table th:nth-child(1),
+#vocab-table td:nth-child(1) {
+    width: 25%;
+}
+
+/* 設定第二欄 (中文解釋) 的寬度 */
+#vocab-table th:nth-child(2),
+#vocab-table td:nth-child(2) {
+    width: 25%;
+}
+
+/* 設定第三欄 (例句) 的寬度 */
+#vocab-table th:nth-child(3),
+#vocab-table td:nth-child(3) {
+    width: 45%;
+}
+
+/* 設定第四欄 (發音按鈕) 的寬度並置中 */
+#vocab-table th:nth-child(4),
+#vocab-table td:nth-child(4) {
+    width: 5%;
+    text-align: center;
+}
+/* --- 修改結束 --- */

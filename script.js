@@ -1,3 +1,4 @@
+// script.js (完整版本)
 document.addEventListener('DOMContentLoaded', () => {
     // DOM 元素
     const setupScreen = document.getElementById('setup-screen');
@@ -10,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startBtn = document.getElementById('start-btn');
     
     const definitionDisplay = document.getElementById('definition-display');
+    const posDisplay = document.getElementById('pos-display'); // [新增] 取得詞性顯示元素
     const answerInput = document.getElementById('answer-input');
     const feedback = document.getElementById('feedback');
     const nextBtn = document.getElementById('next-btn');
@@ -61,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
         speechSynthesis.onvoiceschanged = loadVoices;
     }
 
-    // 初始化
     auth.onAuthStateChanged(async user => {
         if (user) {
             currentUser = user;
@@ -211,6 +212,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const wordData = currentQuizVocab[currentWordIndex];
         definitionDisplay.textContent = wordData.Definition_ZH;
+        // [修改] 顯示詞性
+        posDisplay.textContent = `(${wordData.PartOfSpeech})`; 
+        
         answerInput.value = '';
         answerInput.disabled = false;
         answerInput.focus();
@@ -280,7 +284,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // 雖然 stats.html 不再顯示，但保留這個數據可能對未來有用
         const historyRef = userRef.child('history');
         historyRef.push({
             word: word,
@@ -315,8 +318,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const correctnessClass = item.isCorrect ? 'correct' : 'incorrect';
             const correctnessIcon = item.isCorrect ? '✔' : '✘';
             
+            // [修改] 在回顧列表中加入詞性
             row.innerHTML = `
-                <td>${item.wordData.Word} <br><small>${item.wordData.Definition_ZH}</small></td>
+                <td>
+                    ${item.wordData.Word} <span class="part-of-speech">(${item.wordData.PartOfSpeech})</span>
+                    <br><small>${item.wordData.Definition_ZH}</small>
+                </td>
                 <td class="${correctnessClass}">${item.userAnswer || '（未作答）'}</td>
                 <td class="${correctnessClass}">${correctnessIcon}</td>
                 <td>
@@ -351,7 +358,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return array;
     }
 
-    // 事件監聽
     startBtn.addEventListener('click', startQuiz);
     restartBtn.addEventListener('click', resetQuiz);
     
