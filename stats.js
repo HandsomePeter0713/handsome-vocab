@@ -11,7 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const practiceIncorrectBtn = document.getElementById('practice-incorrect-btn');
 
     let allVocabMap = {};
-    let weeklyChartInstance = null; // 用來存放圖表實例
+    let weeklyChartInstance = null;
+
+    // [新增] 確保日期字串總是使用本地時間的輔助函式
+    function getLocalDateString(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // 月份是 0-11
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
 
     auth.onAuthStateChanged(user => {
         if (user) {
@@ -88,27 +96,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     practiceIncorrectBtn.classList.add('hidden');
                 }
 
-                // [新增] 處理並渲染週成果圖表
                 const weeklyData = processWeeklyData(historyData, wordsData);
                 renderWeeklyChart(weeklyData);
             }
         });
     }
 
-    // [新增] 處理近一週數據的函式
     function processWeeklyData(historyData, wordsData) {
         const today = new Date();
-        today.setHours(23, 59, 59, 999); // 設定為今天的最末尾
-        const sevenDaysAgo = new Date(today);
+        const sevenDaysAgo = new Date();
         sevenDaysAgo.setDate(today.getDate() - 6);
-        sevenDaysAgo.setHours(0, 0, 0, 0); // 設定為七天前的最開頭
+        sevenDaysAgo.setHours(0, 0, 0, 0);
 
-        // 1. 初始化過去七天的資料結構
         const dailyStats = {};
         for (let i = 0; i < 7; i++) {
             const date = new Date(sevenDaysAgo);
             date.setDate(date.getDate() + i);
-            const dateString = date.toISOString().split('T')[0]; // 'YYYY-MM-DD'
+            // [修改] 使用新的輔助函式來取得本地日期字串
+            const dateString = getLocalDateString(date);
             dailyStats[dateString] = {
                 total: 0,
                 correct: 0,
@@ -116,15 +121,15 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         }
 
-        // 2. 篩選並統計歷史紀錄
         const historyList = Object.values(historyData);
         const recentHistory = historyList.filter(item => {
             const itemDate = new Date(item.timestamp);
-            return itemDate >= sevenDaysAgo && itemDate <= today;
+            return itemDate >= sevenDaysAgo;
         });
 
         recentHistory.forEach(item => {
-            const dateString = new Date(item.timestamp).toISOString().split('T')[0];
+            // [修改] 使用新的輔助函式來取得本地日期字串
+            const dateString = getLocalDateString(new Date(item.timestamp));
             if (dailyStats[dateString]) {
                 dailyStats[dateString].total++;
                 if (item.correct) {
@@ -133,14 +138,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // 3. 計算每日新增的熟練單字數 (這是一個估算)
-        // 找出所有熟練的單字，並檢查它們的最後一次答題時間
         for (const word in wordsData) {
             const data = wordsData[word];
             if ((data.mastery || 0) >= 3 && data.lastAttempt) {
                 const lastAttemptDate = new Date(data.lastAttempt);
-                if (lastAttemptDate >= sevenDaysAgo && lastAttemptDate <= today) {
-                    const dateString = lastAttemptDate.toISOString().split('T')[0];
+                if (lastAttemptDate >= sevenDaysAgo) {
+                    // [修改] 使用新的輔助函式來取得本地日期字串
+                    const dateString = getLocalDateString(lastAttemptDate);
                     if (dailyStats[dateString]) {
                         dailyStats[dateString].newlyMastered++;
                     }
@@ -151,15 +155,14 @@ document.addEventListener('DOMContentLoaded', () => {
         return dailyStats;
     }
 
-    // [新增] 渲染圖表的函式
     function renderWeeklyChart(dailyStats) {
         const ctx = document.getElementById('weekly-chart').getContext('2d');
         
         if (weeklyChartInstance) {
-            weeklyChartInstance.destroy(); // 如果圖表已存在，先銷毀
+            weeklyChartInstance.destroy();
         }
 
-        const labels = Object.keys(dailyStats).map(date => date.substring(5)); // 'MM-DD'
+        const labels = Object.keys(dailyStats).map(date => date.substring(5));
         const totalData = Object.values(dailyStats).map(day => day.total);
         const accuracyData = Object.values(dailyStats).map(day => day.total > 0 ? Math.round((day.correct / day.total) * 100) : 0);
         const masteredData = Object.values(dailyStats).map(day => day.newlyMastered);
@@ -188,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     {
                         label: '每日正確率 (%)',
                         data: accuracyData,
-                        borderColor: 'rgba(75, 192, 75, 1)', // Green accent color
+                        borderColor: 'rgba(75, 192, 75, 1)',
                         backgroundColor: 'rgba(75, 192, 75, 0.2)',
                         yAxisID: 'y-axis-percentage',
                         tension: 0.1
@@ -208,10 +211,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             text: '數量'
                         },
                         ticks: {
-                           color: '#e0e0e0' // 刻度文字顏色
+                           color: '#e0e0e0'
                         },
                         grid: {
-                            color: '#555' // 網格線顏色
+                            color: '#555'
                         }
                     },
                     'y-axis-percentage': {
@@ -227,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
                            color: '#e0e0e0'
                         },
                         grid: {
-                            drawOnChartArea: false, // 只顯示主網格線
+                            drawOnChartArea: false,
                         }
                     },
                     x: {
@@ -242,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 plugins: {
                     legend: {
                         labels: {
-                            color: '#e0e0e0' // 圖例文字顏色
+                            color: '#e0e0e0'
                         }
                     }
                 }
